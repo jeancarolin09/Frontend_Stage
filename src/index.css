@@ -1,0 +1,9 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+@import "tailwindcss";
+
+/* const handleLogout = () => {
+  localStorage.removeItem("jwt"); // supprime le token
+  window.location.href = "/login"; // redirige vers login
+}; */
