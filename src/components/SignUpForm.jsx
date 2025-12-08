@@ -1,5 +1,39 @@
 import { useState } from 'react';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+// Composant de champ réutilisable, ajusté pour le thème sombre
+const InputField = ({ label, type, name, value, onChange, placeholder, icon: Icon, error, showPasswordToggle }) => (
+  <div className="relative mb-6">
+     <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label> 
+    {Icon && <Icon className="absolute left-3 top-1/2 transform -translate-y-1/2 mt-3 text-gray-500 w-5 h-5" aria-hidden="true" />}
+    <input
+      id={name}
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+       className={`w-full pl-10 pr-12 py-3 bg-white border border-gray-300 rounded-lg outline-none transition duration-200 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-400 focus:border-transparent ${
+        error ? 'border-red-500' : ''
+      }`}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${name}-error` : undefined}
+    />
+    {showPasswordToggle && (
+      <button
+        type="button"
+        onClick={showPasswordToggle.onClick}
+       className="absolute right-3 top-1/2 transform -translate-y-1/2 mt-3 text-gray-500 hover:text-gray-800 transition"
+        aria-label={showPasswordToggle.label}
+      >
+        {showPasswordToggle.icon}
+      </button>
+    )}
+   {error && <p id={`${name}-error`} className="text-red-600 text-sm mt-1 animate-fadeIn">{error}</p>}
+  </div>
+);
 
 const SignupForm = ({ onSubmit, isSubmitting }) => {
   const [formData, setFormData] = useState({
@@ -46,139 +80,123 @@ const SignupForm = ({ onSubmit, isSubmitting }) => {
   };
 
   return (
-    <div className="min-h-150 flex items-center justify-center bg-gradient-to-r from-green-100 via-white to-green-100 p-2 rounded-xl">
-      <form
-        className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6"
-        onSubmit={handleSubmit}
+    // Le formulaire est maintenant transparent, comme celui de connexion
+     <form
+      className="w-full p-8 space-y-6 bg-white rounded-lg shadow-xl border border-gray-100"
+      onSubmit={handleSubmit}
+      aria-labelledby="signup-heading"
+    >
+       <h2 id="signup-heading" className="text-3xl font-bold text-gray-800 text-center mb-6">Créer un compte</h2>
+
+      {/* Nom complet */}
+      <InputField
+        label="Nom"
+        type="text"
+        name="fullName"
+        value={formData.fullName}
+        onChange={handleChange}
+        placeholder="Votre nom"
+        icon={User}
+        error={errors.fullName}
+      />
+
+      {/* Email */}
+      <InputField
+        label="Email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="votre@email.com"
+        icon={Mail}
+        error={errors.email}
+      />
+
+      {/* Mot de passe */}
+      <InputField
+        label="Mot de passe"
+        type={showPassword ? 'text' : 'password'}
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="••••••••"
+        icon={Lock}
+        error={errors.password}
+        showPasswordToggle={{
+          onClick: () => setShowPassword(!showPassword),
+          icon: showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />,
+          label: showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe',
+        }}
+      />
+
+      {/* Confirmation mot de passe */}
+      <InputField
+        label="Confirmer le mot de passe"
+        type={showConfirmPassword ? 'text' : 'password'}
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        placeholder="••••••••"
+        icon={Lock}
+        error={errors.confirmPassword}
+        showPasswordToggle={{
+          onClick: () => setShowConfirmPassword(!showConfirmPassword),
+          icon: showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />,
+          label: showConfirmPassword ? 'Masquer la confirmation du mot de passe' : 'Afficher la confirmation du mot de passe',
+        }}
+      />
+
+      {/* Conditions */}
+      <div>
+        <div className="flex items-start">
+          <input
+            id="acceptTerms"
+            type="checkbox"
+            checked={acceptTerms}
+            onChange={(e) => {
+              setAcceptTerms(e.target.checked);
+              if (errors.terms) setErrors(prev => ({ ...prev, terms: '' }));
+            }}
+           className="w-4 h-4 text-red-600 border-gray-400 rounded focus:ring-red-600 mt-1"
+          />
+          <label htmlFor="acceptTerms" className="ml-2 text-sm text-gray-700">
+            J'accepte les{' '}
+            {/* Liens ajustés pour être visibles sur fond clair */}
+            <a href="#" className="text-red-600 hover:text-red-700 underline transition">
+              conditions d'utilisation
+            </a>{' '}
+            et la{' '}
+            <a href="#" className="text-red-600 hover:text-red-700 underline transition">
+              politique de confidentialité
+            </a>
+          </label>
+        </div>
+        {errors.terms && <p className="text-red-600 text-sm mt-1">{errors.terms}</p>}
+      </div>
+
+      {/* Bouton Créer un compte */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        // Utilisation du dégradé similaire au bouton Submit de Login, mais avec des couleurs plus "inscription" (vert/bleu)
+        className="w-full bg-gradient-to-r from-pink-700 to-purple-500 text-white py-3 rounded-pill font-semibold hover:from-pink-400 hover:to-purple-500 transition duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        <h2 className="text-3xl font-bold text-gray-800 text-center">Créer un compte</h2>
-
-        {/* Nom complet */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Nom complet</label>
-          <div className="relative">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Votre nom complet"
-              className={`w-full pl-10 pr-4 py-3 border ${
-                errors.fullName ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition`}
-            />
-          </div>
-          {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
-        </div>
-
-        {/* Email */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="votre@email.com"
-              className={`w-full pl-10 pr-4 py-3 border ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition`}
-            />
-          </div>
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-        </div>
-
-        {/* Mot de passe */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              className={`w-full pl-10 pr-12 py-3 border ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
-          </div>
-          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-        </div>
-
-        {/* Confirmation mot de passe */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Confirmer le mot de passe</label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="••••••••"
-              className={`w-full pl-10 pr-12 py-3 border ${
-                errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
-          </div>
-          {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
-        </div>
-
-        {/* Conditions */}
-        <div>
-          <div className="flex items-start">
-            <input
-              type="checkbox"
-              checked={acceptTerms}
-              onChange={(e) => {
-                setAcceptTerms(e.target.checked);
-                if (errors.terms) setErrors(prev => ({ ...prev, terms: '' }));
-              }}
-              className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 mt-1"
-            />
-            <span className="ml-2 text-sm text-gray-600">
-              J'accepte les{' '}
-              <a href="#" className="text-green-600 hover:text-green-700">
-                conditions d'utilisation
-              </a>{' '}
-              et la{' '}
-              <a href="#" className="text-green-600 hover:text-green-700">
-                politique de confidentialité
-              </a>
-            </span>
-          </div>
-          {errors.terms && <p className="text-red-500 text-sm mt-1">{errors.terms}</p>}
-        </div>
-
-        {/* Bouton */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? 'Création en cours...' : 'Créer un compte'}
-        </button>
-      </form>
-    </div>
+        {isSubmitting ? 'Création en cours...' : 'Créer un compte'}
+      </button>
+      
+      {/* Liens Sociaux (identiques à Login.jsx) */}
+     <div className="flex justify-center gap-4 mt-8">
+        <button aria-label="S'inscrire avec Facebook" className="p-3 bg-gray-100 rounded-3 text-gray-700 hover:bg-blue-600 hover:text-white transition duration-200">
+          <Facebook size={20} />
+        </button>
+        <button aria-label="S'inscrire avec Instagram" className="p-3 bg-gray-100 rounded-3 text-gray-700 hover:bg-pink-600 hover:text-white transition duration-200">
+          <Instagram size={20} />
+        </button>
+        <button aria-label="S'inscrire avec LinkedIn" className="p-3 bg-gray-100 rounded-3 text-gray-700 hover:bg-blue-700 hover:text-white transition duration-200">
+          <Linkedin size={20} />
+        </button>
+      </div>
+    </form>
   );
 };
 

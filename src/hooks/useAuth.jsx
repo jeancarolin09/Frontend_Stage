@@ -1,24 +1,24 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 
-export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+// export function useAuth() {
+//   const [isAuthenticated, setIsAuthenticated] = useState(false);
+//   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    const userData = JSON.parse(localStorage.getItem("user")); // stocke les infos user après login
-    if (token && userData) {
-      setIsAuthenticated(true);
-      setUser(userData);
-    }
-  }, []);
+//   useEffect(() => {
+//     const token = localStorage.getItem("jwt");
+//     const userData = JSON.parse(localStorage.getItem("user")); // stocke les infos user après login
+//     if (token && userData) {
+//       setIsAuthenticated(true);
+//       setUser(userData);
+//     }
+//   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("user");
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+//   const logout = () => {
+//     localStorage.removeItem("jwt");
+//     localStorage.removeItem("user");
+//     setIsAuthenticated(false);
+//     setUser(null);
+//   };
 
-  return { isAuthenticated, user, logout };
-}
+//   return { isAuthenticated, user, logout };
+// }

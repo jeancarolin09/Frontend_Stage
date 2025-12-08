@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   return (
     <div className="app">
       <Header />
-      <main className="container">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
