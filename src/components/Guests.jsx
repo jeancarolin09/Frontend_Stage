@@ -2,6 +2,34 @@ import React, { useState } from "react";
 import axios from "axios";
 import { UserPlus, Trash2, Loader, Mail, User, AlertCircle, CheckCircle, XCircle, Clock } from "lucide-react";
 
+// --- Composant Avatar ---
+const Avatar = ({ user, size = "12", showOnlineStatus = true }) => {
+    const isOnline = user?.isOnline === true;
+    const dimensionClass = `w-${size} h-${size}`;
+
+    return (
+        <div className={`relative ${dimensionClass}`}>
+            {user?.profilePicture ? (
+                <img
+                    src={`http://localhost:8000${user.profilePicture}`}
+                    alt={user?.name}
+                    className={`rounded-full object-cover border-2 border-white shadow-md ${dimensionClass}`}
+                />
+            ) : (
+                <div
+                    className={`rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white font-semibold flex items-center justify-center border-2 border-white shadow-md ${dimensionClass}`}
+                >
+                    {user?.name ? user.name.charAt(0).toUpperCase() : "?"}
+                </div>
+            )}
+
+            {showOnlineStatus && isOnline && (
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full z-10"></span>
+            )}
+        </div>
+    );
+};
+
 const Guests = ({ event, setEvent }) => {
     const [newGuest, setNewGuest] = useState({ name: "", email: "" });
     const [loading, setLoading] = useState(false);
@@ -156,34 +184,43 @@ const Guests = ({ event, setEvent }) => {
                             const { icon: StatusIcon, text, color } = getStatusStyle(guest.status);
                             return (
                                 <div 
-                                    key={guest.id || guest.email}
-                                    className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all group"
-                                >
-                                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white font-semibold flex-shrink-0 text-xs">
-                                            {guest.name ? guest.name.charAt(0).toUpperCase() : guest.email?.charAt(0).toUpperCase()}
-                                        </div>
-                                        
-                                        <div className="flex-1 min-w-0">
-                                            <p className="font-medium text-gray-900 text-sm truncate">{guest.name || "—"}</p>
-                                            <p className="text-xs text-gray-500 truncate">{guest.email || "—"}</p>
-                                        </div>
-                                    </div>
+    key={guest.id || guest.email}
+    className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all group"
+>
+    <div className="flex items-center gap-3 flex-1 min-w-0">
 
-                                    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-semibold text-xs whitespace-nowrap mx-2 ${color}`}>
-                                        <StatusIcon size={13} />
-                                        {text}
-                                    </div>
+        {/* ---- AVATAR ---- */}
+        <Avatar
+            user={{
+                name: guest.name,
+                profilePicture: guest.profilePicture || null
+            }}
+            name={guest.name}
+            src={guest.profilePicture}
+            size={9}
+        />
 
-                                    <button
-                                        onClick={() => handleDeleteGuest(guest.id)}
-                                        className="p-1.5 text-red-600 hover:bg-red-50 rounded-pill transition-all opacity-100 group-hover:opacity-100"
-                                        disabled={loading}
-                                        title="Supprimer"
-                                    >
-                                        <Trash2 size={16} />
-                                    </button>
-                                </div>
+        <div className="flex-1 min-w-0">
+            <p className="font-medium text-gray-900 text-sm truncate">{guest.name || "—"}</p>
+            <p className="text-xs text-gray-500 truncate">{guest.email || "—"}</p>
+        </div>
+    </div>
+
+    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-semibold text-xs whitespace-nowrap mx-2 ${color}`}>
+        <StatusIcon size={13} />
+        {text}
+    </div>
+
+    <button
+        onClick={() => handleDeleteGuest(guest.id)}
+        className="p-1.5 text-red-600 hover:bg-red-50 rounded-pill transition-all opacity-100 group-hover:opacity-100"
+        disabled={loading}
+        title="Supprimer"
+    >
+        <Trash2 size={16} />
+    </button>
+</div>
+
                             );
                         })}
                     </div>

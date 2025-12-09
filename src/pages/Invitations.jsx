@@ -327,7 +327,7 @@ const Invitations = ({ userEmail, onNotificationUpdate }) => {
               <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 <div className="flex items-center gap-2.5 p-2.5 bg-white/60 rounded-lg hover:bg-white transition">
                   <Calendar size={18} className="text-purple-600 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 font-medium">{eventDate.toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</span>
+                  <span className="text-sm text-gray-700 font-medium">{eventDate.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span>
                 </div>
                 <div className="flex items-center gap-2.5 p-2.5 bg-white/60 rounded-lg hover:bg-white transition">
                   <Clock size={18} className="text-pink-600 flex-shrink-0" />

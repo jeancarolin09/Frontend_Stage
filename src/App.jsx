@@ -31,7 +31,7 @@ function AppRoutes() {
       {/* Pages privées */}
       <Route path="/dashboard" element={isAuthenticated ? <Layout><Dashboard /></Layout> : <Navigate to="/login" />} />
       <Route path="/create-event" element={isAuthenticated ? <Layout><CreateEvent /></Layout> : <Navigate to="/login" />} />
-      <Route path="/event/:id" element={isAuthenticated ? <Layout><EventDetails /></Layout> : <Navigate to="/login" />} />
+       <Route path="/event/:id" element={isAuthenticated ? <Layout><EventDetails /></Layout> : <Navigate to="/login" />} />
       <Route path="/profile" element={isAuthenticated ? <Layout><Profile /></Layout> : <Navigate to="/login" />}/>
       <Route path="/settings" element={isAuthenticated ? <Layout><Settings /></Layout> : <Navigate to="/login" />} />
       <Route path="/about" element={isAuthenticated ? <Layout><About /></Layout> : <Navigate to="/login" />} />

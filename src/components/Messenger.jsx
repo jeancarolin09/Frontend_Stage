@@ -243,7 +243,7 @@ useEffect(() => {
 
         try {
             const res = await fetch(
-                `http://localhost:8000/api/messages/${messageId}`,
+                `http://localhost:8000/api/conversations/${selectedConversation.id}/messages/${messageId}`,
                 {
                     method: 'DELETE',
                     headers: { Authorization: `Bearer ${jwt}` }
@@ -285,55 +285,6 @@ useEffect(() => {
             console.error('Erreur lors de l\'envoi du message:', err);
         }
     };
-    
-    
-    // const markMessageAsRead = async (messageId) => {
-    //     try {
-    //         await fetch(`http://localhost:8000/api/conversations/messages/${messageId}/read`, {
-    //             method: 'POST',
-    //             headers: { Authorization: `Bearer ${jwt}` },
-    //         });
-
-    //         // Mettre à jour localement pour que l'UI se mette à jour
-    //         setMessages(prev =>
-    //             prev.map(msg =>
-    //                 msg.id === messageId ? { ...msg, isRead: true } : msg
-    //             )
-    //         );
-    //         await fetchConversations(); // mettre à jour le badge
-    //     } catch (err) {
-    //         console.error('Erreur lors de la lecture du message:', err);
-    //     }
-    // };
-    // --- UseEffect après la déclaration ---
-// useEffect(() => {
-//     if (!messages || messages.length === 0) return;
-
-//     messages.forEach(msg => {
-//         if (!msg.isRead && msg.senderId !== currentUser.id) {
-//             markMessageAsRead(msg.id);
-//         }
-//     });
-// }, [messages, currentUser, markMessageAsRead]);
-
-    // const markConversationAsRead = async (convId) => {
-    //     try {
-    //         // NOTE: Changez ceci si votre endpoint n'est pas PATCH
-    //         const res = await fetch(`http://localhost:8000/api/conversations/${convId}/read`, {
-    //             method: 'PATCH', 
-    //             headers: { Authorization: `Bearer ${jwt}` },
-    //         });
-
-    //         if (res.ok) {
-    //             // Mise à jour de l'état local pour supprimer les indicateurs de non-lu
-    //             setConversations(prev =>
-    //                 prev.map(c => c.id === convId ? { ...c, unreadCount: 0 } : c)
-    //             );
-    //         }
-    //     } catch (err) {
-    //         console.error('Erreur lors du marquage de la conversation comme lue:', err);
-    //     }
-    // };
     
     // NOUVELLE FONCTION pour sélectionner et marquer comme lu immédiatement
   // 🔹 Marquer la conversation comme lue et mettre à jour state local

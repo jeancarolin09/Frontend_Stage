@@ -7,7 +7,7 @@ import { useNotifications } from "../hooks/useNotifications";
 
 import { 
     Menu, X, LogOut, Home, Mail, Activity, Calendar, MapPin as MapPinIcon, 
-    Trash2, Search, ChevronDown, DollarSign, Bookmark, Users, Bell,
+    Trash2, Search, ChevronDown, DollarSign, Bookmark, Users, Bell, Bot,
     Settings, HelpCircle, User, Zap, LogIn, ChevronLeft, Heart, MessageCircle, MessageSquare
 } from "lucide-react";
 import Invitations from "./Invitations";
@@ -15,6 +15,7 @@ import Feed from "../components/Feed";
 import MyEvent from "./MyEvent";
 import EventDetailsModal from "../components/EventDetailsModal";
 import Messenger from '../components/Messenger';
+import AIEventAssistant from '../components/AIEventAssistant';
 
 // --- Composant Avatar ---
 const Avatar = ({ user, src, name, size = 10 }) => {
@@ -83,6 +84,7 @@ const MiniSidebar = ({
     setActiveTab, 
     handleLogout,
     hasUpcomingEventAlert,
+    onOpenAIAssistant,
 }) => {
     const { counts } = useNotifications(10000);
 
@@ -92,6 +94,7 @@ const MiniSidebar = ({
         { id: "messages", icon: MessageCircle, label: "Messages", badge: counts.messages },
         { id: "invitations", icon: Mail, label: "Invitations", badge: counts.invitations },
         { id: "activity", icon: Activity, label: "Activités", badge: counts.activities },
+        { id: "ai-assistant", icon: Bot, label: "Assistant IA", isAction: true }, // isAction = true pour différencier
     ];
 
     return (
@@ -104,8 +107,14 @@ const MiniSidebar = ({
                     return (
                         <div key={item.id} className="relative group overflow-visible">
                             <button
-                                onClick={() => setActiveTab(item.id)}
-                                className={`
+                                 onClick={() => {
+                                    if (item.isAction) {
+                                        onOpenAIAssistant(); // Action spéciale pour l'IA
+                                    } else {
+                                        setActiveTab(item.id);
+                                    }
+                                }}
+                                 className={`
                                     flex items-center justify-center
                                     w-12 h-12 
                                     rounded-2xl
@@ -357,7 +366,7 @@ const DiscoveryFeed = ({
             </div>
         ) : (
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {events.slice(0, 12).map((event) => ( 
+                {events.map((event) => ( 
                     <EventDiscoveryCard 
                         key={event.id}
                         event={event}
@@ -392,6 +401,8 @@ function Dashboard() {
     const [activeTab, setActiveTab] = useState("discovery"); 
     const [selectedEvent, setSelectedEvent] = useState(null);
  
+    const [showAIAssistant, setShowAIAssistant] = useState(false);
+
     const myEvents = Array.isArray(myEventsData) ? myEventsData : [];
     const [hasUpcomingEventAlert, setHasUpcomingEventAlert] = useState(false);
     const { notifications, counts, markAllAsRead, markMessagesAsRead ,unreadCount } = useNotifications();
@@ -576,6 +587,7 @@ function Dashboard() {
                 userEmail={user?.email}
                 unreadCount={unreadCount}
                 hasUpcomingEventAlert={hasUpcomingEventAlert}
+                onOpenAIAssistant={() => setShowAIAssistant(true)}
             />
 
             {/* 2. Contenu Principal */}
@@ -646,6 +658,27 @@ function Dashboard() {
                     refetchEvents={() => { refetchMyEvents(); refetchDiscoveryEvents(); }}
                 />
             )}
+            {/* 🤖 NOUVEAU - Assistant IA */}
+        {showAIAssistant && (
+    <AIEventAssistant
+        onClose={() => setShowAIAssistant(false)}
+        onEventCreated={(event) => {
+            setShowAIAssistant(false);
+            
+            // ✅ Rafraîchir les données
+            refetchMyEvents();
+            refetchDiscoveryEvents();
+            
+            // ✅ Basculer vers l'onglet "Mes Événements"
+            setActiveTab('my-event');
+            
+            // ✅ Notification de succès
+            setTimeout(() => {
+                alert(`✅ Événement "${event.title}" créé avec succès par l'IA ! 🎉`);
+            }, 500);
+        }}
+    />
+)}
         </div>
     );
 }
