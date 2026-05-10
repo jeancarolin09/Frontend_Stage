@@ -193,7 +193,9 @@ const MapPicker = ({ onLocationChange, initialLatitude, initialLongitude }) => {
                 (pos) => {
                     const lat = pos.coords.latitude;
                     const lng = pos.coords.longitude;
+                    // console.log(lat, lng);
                     const userPos = [lat, lng];
+
                     setUserPosition(userPos);
                     
                     // Si pas de coordonnées initiales, initialiser l'événement à la position de l'user
@@ -282,7 +284,7 @@ const MapPicker = ({ onLocationChange, initialLatitude, initialLongitude }) => {
                 fontSize: '0.875rem',
                 color: '#92400e'
             }}>
-                💡 Cliquez sur la carte ou déplacez le marqueur rouge pour définir la position de l'événement
+                💡 Cliquez sur la carte ou déplacez le marqueur bleu pour définir la position de l'événement
             </div>
 
             {/* Carte */}

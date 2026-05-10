@@ -11,7 +11,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const Avatar = ({ user, size = "28", showOnlineStatus = true }) => {
+  const Avatar = ({ user, size = "10", showOnlineStatus = true }) => {
     const isOnline = user?.isOnline === true;
     const dimensionClass = `w-${size} h-${size}`;
 
@@ -97,7 +97,7 @@ export default function Profile() {
         <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 mb-8 hover:shadow-xl transition">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="relative">
-              <Avatar user={user} size="28" />
+              <Avatar user={user} size="16" />
               {/* <button className="absolute bottom-0 right-0 p-2 bg-purple-600 rounded-full text-white hover:bg-purple-700 transition shadow-lg">
                 <Edit size={16} />
               </button> */}

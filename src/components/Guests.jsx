@@ -4,6 +4,9 @@ import { UserPlus, Trash2, Loader, Mail, User, AlertCircle, CheckCircle, XCircle
 
 // --- Composant Avatar ---
 const Avatar = ({ user, size = "12", showOnlineStatus = true }) => {
+      console.log("User reçu :", user);
+     console.log("Avatar src:", user?.profilePicture);
+   
     const isOnline = user?.isOnline === true;
     const dimensionClass = `w-${size} h-${size}`;
 
@@ -197,7 +200,7 @@ const Guests = ({ event, setEvent }) => {
             }}
             name={guest.name}
             src={guest.profilePicture}
-            size={9}
+            size={12}
         />
 
         <div className="flex-1 min-w-0">

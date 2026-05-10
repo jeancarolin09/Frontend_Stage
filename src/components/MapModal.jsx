@@ -68,7 +68,7 @@ const MapModal = ({ latitude, longitude, locationName, onClose }) => {
   const eventLng = longitude ? parseFloat(longitude) : 2.3522;
   const eventPos = [eventLat, eventLng];
 
-  // 📍 Récupération de la position réelle de l'utilisateur
+  //  Récupération de la position réelle de l'utilisateur
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -83,17 +83,18 @@ const MapModal = ({ latitude, longitude, locationName, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 backdrop-blur-lg bg-black/60 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-xl md:max-w-3xl overflow-hidden relative">
-
-        {/* ❌ Bouton fermer */}
+      {/* Bouton fermer */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-white rounded-full shadow-lg hover:bg-gray-100"
+          className="absolute top-4 right-4 z-10 p-2 bg-white rounded-3 shadow-lg hover:bg-gray-100"
         >
           <X size={24} />
         </button>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-xl md:max-w-3xl overflow-hidden relative">
 
-        {/* 🗺️ MAP */}
+        
+
+        {/*  MAP */}
         <MapContainer
           center={eventPos}
           zoom={14}
@@ -102,14 +103,14 @@ const MapModal = ({ latitude, longitude, locationName, onClose }) => {
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-          {/* ⭐ Marqueur du lieu */}
+          {/*  Marqueur du lieu */}
           <Marker position={eventPos}>
             <Popup>
               📍 <strong>{locationName || "Lieu"}</strong>
             </Popup>
           </Marker>
 
-          {/* ⭐ Position réelle user */}
+          {/*  Position réelle user */}
           {userPos && (
             <Marker position={userPos} icon={userIcon}>
               <Popup>
@@ -119,7 +120,7 @@ const MapModal = ({ latitude, longitude, locationName, onClose }) => {
             </Marker>
           )}
 
-          {/* 🟦 Routing */}
+          {/*  Routing */}
           {userPos && (
             <RoutingMachine userPos={userPos} eventPos={eventPos} />
           )}

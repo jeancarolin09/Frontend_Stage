@@ -140,7 +140,7 @@ useEffect(() => {
     const stats = [
         { label: "Activités", value: activities.length, icon: Activity, gradient: "from-purple-600 to-blue-600" },
         { label: "Aujourd'hui", value: "12", icon: Calendar, gradient: "from-blue-600 to-cyan-600" },
-        { label: "Utilisateurs", value: "342", icon: Users, gradient: "from-emerald-600 to-teal-600" }
+        { label: "Utilisateurs", value: "9", icon: Users, gradient: "from-emerald-600 to-teal-600" }
     ];
 
     const markAllRead = async () => {

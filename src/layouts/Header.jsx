@@ -60,7 +60,7 @@ const Header = () => {
     if (!user) return null;
 
     return (
-        <header className="w-full absolute top-0 left-0 z-40 px-6 py-4 flex items-center justify-between backdrop-blur-lg shadow-none">
+        <header className="w-full fixed top-0 left-0 z-40 px-6 py-4 flex items-center justify-between backdrop-blur-lg shadow-none">
 
             {/* Logo */}
             <div

@@ -674,7 +674,7 @@ function Dashboard() {
             
             // ✅ Notification de succès
             setTimeout(() => {
-                alert(`✅ Événement "${event.title}" créé avec succès par l'IA ! 🎉`);
+                alert(`✅ Événement "${event.event.title}" créé avec succès par l'IA ! 🎉`);
             }, 500);
         }}
     />

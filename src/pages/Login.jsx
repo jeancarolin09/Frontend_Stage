@@ -113,7 +113,11 @@ const Login = () => {
           
           {/* CHANGEMENT 1: Nouveau texte de description */}
           <p className="text-gray-800 text-lg mb-8 max-w-md">
-            Connectez-vous à votre espace personnel **EventPlanner** pour accéder à tous vos outils de planification. Gagnez du temps et gérez vos événements en toute simplicité.
+            Connectez-vous à votre espace personnel {" "}
+  <span className="font-extrabold tracking-tight text-gray-900">
+    <strong>Event</strong>
+    <strong className="text-purple-600">Planner</strong>
+  </span>{" "} pour accéder à tous vos outils de planification. Gagnez du temps et gérez vos événements en toute simplicité.
           </p>
           
           {/* CHANGEMENT 2: Bouton S'inscrire */}

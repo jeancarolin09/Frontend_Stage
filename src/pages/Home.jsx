@@ -172,7 +172,7 @@ const Home = () => {
                         to="/signup"
                         className="bg-purple-600  text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-700 transition transform hover:scale-105 shadow-xl shadow-purple-200 duration-300"
                     >
-                        Commencer Gratuitement
+                        Commencer 
                     </Link>
                     <a
                         href="#features"

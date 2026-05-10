@@ -313,7 +313,7 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
                   <p className="text-purple-100">Vérifiez tout avant de créer</p>
                 </div>
               </div>
-              <button onClick={() => setStep('conversation')} className="p-2 hover:bg-white/20 rounded-lg">
+              <button onClick={() => setStep('conversation')} className="p-2 hover:bg-white/20 rounded-3">
                 <X size={24} />
               </button>
             </div>
@@ -322,7 +322,7 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
           <div className="p-6 space-y-4">
             {imagePreview && (
               <div className="relative">
-                <img src={imagePreview} alt="Aperçu" className="w-full h-64 object-cover rounded-lg" />
+                <img src={imagePreview} alt="Aperçu" className="w-full h-64 object-cover rounded-3" />
                 <button
                   onClick={() => { setImageFile(null); setImagePreview(null); }}
                   className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
@@ -389,13 +389,13 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
               <button
                 onClick={handleCreateEvent}
                 disabled={!extractedData.latitude || !extractedData.longitude}
-                className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-4 hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 ✨ Créer l'événement
               </button>
               <button
                 onClick={() => setStep('conversation')}
-                className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition"
+                className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-4 hover:bg-gray-300 transition"
               >
                 Modifier
               </button>
@@ -432,7 +432,7 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
                 <p className="text-purple-100">Créez votre événement en discutant</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition">
+            <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-3 transition">
               <X size={24} />
             </button>
           </div>
@@ -480,14 +480,14 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="p-3 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition"
+              className="p-3 bg-purple-100 text-purple-600 rounded-3 hover:bg-purple-200 transition"
               title="Ajouter une image"
             >
               <ImageIcon size={20} />
             </button>
             <button
               onClick={() => setShowMapPicker(!showMapPicker)}
-              className="p-3 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition"
+              className="p-3 bg-blue-100 text-blue-600 rounded-3 hover:bg-blue-200 transition"
               title="Définir la position GPS"
             >
               <Map size={20} />
@@ -495,7 +495,7 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
             <button
               onClick={() => setStep('preview')}
               disabled={!extractedData.title || !extractedData.date}
-              className="p-3 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition disabled:opacity-50"
+              className="p-3 bg-green-100 text-green-600 rounded-3 hover:bg-green-200 transition disabled:opacity-50"
               title="Voir l'aperçu"
             >
               <CheckCircle size={20} />
@@ -503,7 +503,7 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
           </div>
 
           {showMapPicker && (
-            <div className="border border-gray-200 rounded-lg overflow-hidden">
+            <div className="border border-gray-200 rounded-4 overflow-hidden">
               <MapPicker
                 onLocationChange={handleMapLocationChange}
                 initialLatitude={extractedData.latitude}
@@ -525,7 +525,7 @@ const AIEventAssistant = ({ onEventCreated, onClose }) => {
             <button
               onClick={sendMessage}
               disabled={loading || !input.trim()}
-              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-4 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               <Send size={20} />
             </button>
